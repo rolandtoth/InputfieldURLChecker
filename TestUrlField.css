@@ -1,0 +1,44 @@
+.tuf-link {
+    position: absolute;
+    top: 4px;
+    right: 16px;
+    padding: 0 12px;
+    background: transparent;
+    -webkit-transition: opacity 0.2s;
+    -moz-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+}
+
+.tuf-link i {
+    color: #c4c4c4;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.99);
+}
+
+.tuf-link:hover {
+    background: rgba(0, 0, 0, 0.02);
+    opacity: 1;
+}
+
+.tuf-link.tuf-hide {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.InputfieldURL .InputfieldContent {
+    position: relative;
+    overflow: hidden;
+}
+
+.InputfieldURL input {
+    padding-right: 42px !important;
+}
+
+.InputfieldURL input:focus + .tuf-link {
+    opacity: 1;
+}
+
+.tuf-link:hover i,
+.InputfieldURL input:focus + .tuf-link i {
+    color: inherit;
+}
