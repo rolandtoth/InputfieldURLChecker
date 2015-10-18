@@ -33,11 +33,6 @@ $(document).ready(function () {
                     }
                 }
 
-                // disable adding link and events twice (ajax loaded tabs)
-                if (currInput.next().hasClass('tuf-link')) {
-                    return true;
-                }
-
                 // set link height
                 setTimeout(function () {
 
@@ -56,6 +51,11 @@ $(document).ready(function () {
                         });
                     }
                 }, 0);
+
+                // disable adding link and events twice (ajax loaded tabs)
+                if (currInput.next().hasClass('tuf-link')) {
+                    return true;
+                }
 
                 if (TUF.mode === 'button') {
 
