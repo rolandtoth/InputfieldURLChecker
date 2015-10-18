@@ -1,0 +1,81 @@
+<?php
+
+/**
+ * Class TestUrlField
+ */
+class TestUrlField extends WireData implements Module, ConfigurableModule {
+
+    public $configData;
+
+    public static function getModuleInfo() {
+        return array(
+            'title' => 'Test URL Field',
+            'author' => 'Roland Toth',
+            'version' => 80,
+            'summary' => 'Add button to URL fields to test link validity.',
+            'href' => '',
+            'icon' => 'arrow-right',
+            'singular' => true,
+            'autoload' => true
+        );
+    }
+
+
+    public static function getModuleConfigInputfields(array $data) {
+
+        $modules = wire('modules');
+
+        $fields = new InputfieldWrapper();
+
+        $field = $modules->get("InputfieldRadios");
+        $field->name = "mode";
+        $field->label = __("Mode");
+        $field->notes = __("Whether to use a dedicated button or a key/click combo to open URL field contents.");
+        $field->addOption('button', __('Button (default)'));
+        $field->addOption('ctrl-shift-click', __('Ctrl + Shift + Click'));
+        $field->addOption('ctrl-shift-enter', __('Ctrl + Shift + Enter'));
+        $field->value = isset($data['mode']) ? $data['mode'] : 'button';
+        $field->columnWidth = 100;
+        $fields->add($field);
+
+        $field = $modules->get("InputfieldCheckbox");
+        $field->name = "force_http";
+        $field->label = __('Force http');
+        $field->notes = __('Prepend "http://" to link value (default: on).');
+        $field->value = (isset($data['force_http'])) ? $data['force_http'] : 1;
+        $field->checked = ($field->value == 1) ? 'checked' : '';
+        $field->columnWidth = 100;
+        $fields->add($field);
+
+        $field = wire('modules')->get('InputfieldText');
+        $field->name = 'enabled_fields';
+        $field->label = __('Enabled fields');
+        $field->attr('placeholder', 'my_field, another_field');
+        $field->columnWidth = 100;
+        $field->value = $data['enabled_fields'];
+        $field->notes = __('Comma-separated list of field names where module should be enabled. Leave empty to enable all.');
+        $fields->add($field);
+
+        return $fields;
+    }
+
+
+    public function init() {
+
+        $this->config->js("TUF", array(
+                'mode' => $this->configData['mode'],
+                'forceHttp' => (bool)$this->configData['force_http'],
+                'enabled_fields' => $this->configData['enabled_fields']
+            )
+        );
+
+        $this->config->scripts->add($this->config->urls->siteModules . $this->className . DIRECTORY_SEPARATOR . $this->className . '.js?v=' . time());
+        $this->config->styles->add($this->config->urls->siteModules . $this->className . DIRECTORY_SEPARATOR . $this->className . '.css?v=' . time());
+    }
+
+
+    public function __construct() {
+        $this->configData = wire('modules')->getModuleConfigData($this);
+    }
+
+}
