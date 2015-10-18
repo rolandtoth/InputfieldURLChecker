@@ -1,4 +1,4 @@
-Test URL Field for ProcessWire
+Test URL Field module for ProcessWire
 ================
 
 Add button to URL fields to test link validity in [ProcessWire CMS](http://processwire.com/).
