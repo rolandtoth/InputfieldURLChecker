@@ -47,7 +47,7 @@ $(document).ready(function () {
                     if (btnHeight > 0) {
                         currInput.next('.tuf-link').css({
                             'height': btnHeight + 'px',
-                            'line-height': btnHeight - 1 + 'px'
+                            'line-height': btnHeight + 'px'
                         });
                     }
                 }, 0);
