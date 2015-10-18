@@ -11,7 +11,7 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
         return array(
             'title' => 'Test URL Field',
             'author' => 'Roland Toth',
-            'version' => 80,
+            'version' => 82,
             'summary' => 'Add button to URL fields to test link validity.',
             'href' => '',
             'icon' => 'arrow-right',
@@ -52,7 +52,7 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
         $field->label = __('Enabled fields');
         $field->attr('placeholder', 'my_field, another_field');
         $field->columnWidth = 100;
-        $field->value = $data['enabled_fields'];
+        $field->value = isset($data['enabled_fields']) ? $data['enabled_fields'] : '';
         $field->notes = __('Comma-separated list of field names where module should be enabled. Leave empty to enable all.');
         $fields->add($field);
 
@@ -63,9 +63,9 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
     public function init() {
 
         $this->config->js("TUF", array(
-                'mode' => $this->configData['mode'],
-                'forceHttp' => (bool)$this->configData['force_http'],
-                'enabled_fields' => $this->configData['enabled_fields']
+                'mode' => isset($this->configData['mode']) ? $this->configData['mode'] : 'button',
+                'forceHttp' => (bool)(isset($this->configData['force_http']) ? $this->configData['force_http'] : 1),
+                'enabled_fields' => isset($this->configData['enabled_fields']) ? $this->configData['enabled_fields'] : ''
             )
         );
 
