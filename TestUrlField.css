@@ -9,14 +9,14 @@
     right: 16px;
     padding: 0 12px;
     background: transparent;
-    -webkit-transition: opacity 0.2s;
-    -moz-transition: opacity 0.2s;
-    transition: opacity 0.2s;
 }
 
 .tuf-link i {
     color: #c4c4c4;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.99);
+    -webkit-transition: color 0.2s;
+    -moz-transition: color 0.2s;
+    transition: color 0.2s;
 }
 
 .tuf-link:hover {
