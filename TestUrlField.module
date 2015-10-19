@@ -69,8 +69,8 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
             )
         );
 
-        $this->config->scripts->add($this->config->urls->siteModules . $this->className . DIRECTORY_SEPARATOR . $this->className . '.js?v=' . time());
-        $this->config->styles->add($this->config->urls->siteModules . $this->className . DIRECTORY_SEPARATOR . $this->className . '.css?v=' . time());
+        $this->config->scripts->add($this->config->urls->siteModules . $this->className . '/' . $this->className . '.js?v=' . time());
+        $this->config->styles->add($this->config->urls->siteModules . $this->className . '/' . $this->className . '.css?v=' . time());
     }
 
 
