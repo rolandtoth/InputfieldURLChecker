@@ -1,23 +1,53 @@
+/**
+ * Test URL Field module for ProcessWire
+ * https://goo.gl/GRM0jp
+ */
+
 $(document).ready(function () {
 
     var TUF = {
         parent: '.InputfieldURL',
         selector: 'input:not([type="hidden"])',
+        lockedFields: '.collapsed7, .collapsed8',
         testLink: '<a href="#" class="tuf-link" target="_blank"><i class="fa fa-arrow-right"></i></a>',
         mode: (config.TUF && config.TUF.mode) ? config.TUF.mode : 'button',
         forceHttp: (config.TUF && config.TUF.forceHttp) ? config.TUF.forceHttp : false,
-        enabled_fields: (config.TUF && config.TUF.enabled_fields) ? config.TUF.enabled_fields : false
+        enabled_fields: (config.TUF && config.TUF.enabled_fields) ? config.TUF.enabled_fields : false,
+        enabled_templates: (config.TUF && config.TUF.enabled_templates) ? config.TUF.enabled_templates : false,
+        template: (config.TUF && config.TUF.template) ? config.TUF.template : false
     };
 
     TUF.selector = TUF.parent + ' ' + TUF.selector;
 
-    $(document).on('ready reloaded wiretabclick', function () {
-        initTUF();
-    });
+    // continue if template is not among enabled templates
+    if (TUF.enabled_templates && TUF.template) {
+        if(TUF.enabled_templates.indexOf(TUF.template) === -1) {
+            return true;
+        }
+    }
+
+    $(document).on('ready reloaded wiretabclick', initTUF);
 
     function initTUF() {
 
-        if ($(TUF.selector).length) {
+        // linkify fields with locked status
+        if ($(TUF.parent).is(TUF.lockedFields)) {
+
+            $(TUF.parent).filter(TUF.lockedFields).find('.InputfieldContent').each(function () {
+
+                var content = $(this).html().trim();
+
+                if (content && content !== "" && content !== "&nbsp;" && !$(this).find('a').length) {
+                    $(this).wrapInner(function () {
+                        return '<a href="' + content + '" target="_blank"></a>';
+                    });
+                }
+            });
+
+            return true;
+        }
+
+        else if ($(TUF.selector).length) {
 
             $(TUF.selector).each(function () {
 
@@ -65,8 +95,7 @@ $(document).ready(function () {
                             link = currInput.next('.tuf-link');
 
                         if (url) {
-                            link.attr('href', url);
-                            link.removeClass('tuf-hide');
+                            link.attr('href', url).removeClass('tuf-hide');
                         } else {
                             link.addClass('tuf-hide')
                         }

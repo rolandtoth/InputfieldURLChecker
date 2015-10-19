@@ -1,16 +1,8 @@
 <?php
 
 /**
- * todo
- * enabled templates feature
- * (closed + locked) fields: no input, add link somehow
- *
- * Changelog
- *
- * v0.85
- * fixed: ajax-loaded field bug
- * fixed: link positioning on fields with description/notes
- *
+ * Test URL Field module for ProcessWire
+ * https://goo.gl/GRM0jp
  */
 
 /**
@@ -24,7 +16,7 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
         return array(
             'title' => 'Test URL Field',
             'author' => 'Roland Toth',
-            'version' => 85,
+            'version' => 90,
             'summary' => 'Add button to URL fields to test link validity.',
             'href' => '',
             'icon' => 'arrow-right',
@@ -69,21 +61,37 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
         $field->notes = __('Comma-separated list of field names where module should be enabled. Leave empty to enable all.');
         $fields->add($field);
 
+        $field = wire('modules')->get('InputfieldText');
+        $field->name = 'enabled_templates';
+        $field->label = __('Enabled templates');
+        $field->attr('placeholder', 'basic-page, my-page');
+        $field->columnWidth = 100;
+        $field->value = isset($data['enabled_templates']) ? $data['enabled_templates'] : '';
+        $field->notes = __('Comma-separated list of template names where module should be enabled. Leave empty to enable all.');
+        $fields->add($field);
+
         return $fields;
     }
 
 
     public function init() {
 
-        $this->config->js("TUF", array(
-                'mode' => isset($this->configData['mode']) ? $this->configData['mode'] : 'button',
-                'forceHttp' => (bool)(isset($this->configData['force_http']) ? $this->configData['force_http'] : 1),
-                'enabled_fields' => isset($this->configData['enabled_fields']) ? $this->configData['enabled_fields'] : ''
-            )
-        );
+        $this->addHookAfter('ProcessPageEdit::execute', $this, 'addJsConfig');
 
         $this->config->scripts->add($this->config->urls->siteModules . $this->className . '/' . $this->className . '.js?v=' . time());
         $this->config->styles->add($this->config->urls->siteModules . $this->className . '/' . $this->className . '.css?v=' . time());
+    }
+
+
+    public function addJsConfig(HookEvent $event) {
+        $this->config->js("TUF", array(
+                'mode' => isset($this->configData['mode']) ? $this->configData['mode'] : 'button',
+                'forceHttp' => (bool)(isset($this->configData['force_http']) ? $this->configData['force_http'] : 1),
+                'enabled_fields' => isset($this->configData['enabled_fields']) ? $this->configData['enabled_fields'] : '',
+                'enabled_templates' => isset($this->configData['enabled_templates']) ? $this->configData['enabled_templates'] : '',
+                'template' => $event->object->getPage()->template->name
+            )
+        );
     }
 
 

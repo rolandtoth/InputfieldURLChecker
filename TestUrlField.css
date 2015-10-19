@@ -1,3 +1,8 @@
+/**
+ * Test URL Field module for ProcessWire
+ * https://goo.gl/GRM0jp
+ */
+
 .tuf-link {
     position: absolute;
     margin-top: 1px;
@@ -27,11 +32,10 @@
 
 .InputfieldURL .InputfieldContent {
     position: relative;
-    overflow: hidden;
 }
 
 .InputfieldURL input {
-    padding-right: 42px !important;
+    padding-right: 40px !important;
 }
 
 .InputfieldURL input:focus + .tuf-link {

@@ -6,11 +6,14 @@ Add button to URL fields to test link validity in [ProcessWire CMS](http://proce
 ## Features
 
 - adds button to URL fields to test link validity (opens in a new window)
-- link visible only if URL field is not empty
+- linkify locked URL fields
+- link visible only if field is not empty
+- compatible with the Default & Reno admin themes
 - button and key/click combo modes
 - force "http://" prefix (optional)
 - limit module to enabled fields only
-- ajax loaded tabs ready
+- ajax-loaded tabs & fields ready
+
 
 ## Usage
 
@@ -35,13 +38,17 @@ The module currently supports three modes:
 
 If checked, links will always have "http://" prefix, even if the field itself doesn't have it. Default is checked.
 
-### Enabled fields
+### Enabled fields/templates
 
-Comma-separated list of field names where module should be enabled. Leave empty to enable all.
+Comma-separated list of field/template names where module should be enabled. Leave empty to enable all.
+
+Note: if used, module will be disabled on all non-listed fields/templates.
+
 
 ## Troubleshooting and feedback
 
 Forum: [https://processwire.com/talk/topic/11209-modulette-test-url-field/](https://processwire.com/talk/topic/11209-modulette-test-url-field/)
+
 
 ## License
 
