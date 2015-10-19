@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     var TUF = {
         parent: '.InputfieldURL',
-        selector: 'input',
+        selector: 'input:not([type="hidden"])',
         testLink: '<a href="#" class="tuf-link" target="_blank"><i class="fa fa-arrow-right"></i></a>',
         mode: (config.TUF && config.TUF.mode) ? config.TUF.mode : 'button',
         forceHttp: (config.TUF && config.TUF.forceHttp) ? config.TUF.forceHttp : false,
@@ -11,7 +11,7 @@ $(document).ready(function () {
 
     TUF.selector = TUF.parent + ' ' + TUF.selector;
 
-    $(document).on('ready wiretabclick', function ($event, $newTab) {
+    $(document).on('ready reloaded wiretabclick', function () {
         initTUF();
     });
 
@@ -36,24 +36,22 @@ $(document).ready(function () {
                 // set link height
                 setTimeout(function () {
 
-                    if (TUF.mode === 'button') {
-                        var btnHeight = currInput.outerHeight();
+                    var btnHeight;
 
-                        if ($('body').hasClass('AdminThemeReno')) {
-                            btnHeight -= 2;
-                        }
+                    if (TUF.mode === 'button') {
+                        btnHeight = currInput.outerHeight() - 2;
                     }
 
                     if (btnHeight > 0) {
                         currInput.next('.tuf-link').css({
                             'height': btnHeight + 'px',
-                            'line-height': btnHeight + 'px'
+                            'line-height': btnHeight - 1 + 'px'
                         });
                     }
                 }, 0);
 
-                // disable adding link and events twice (ajax loaded tabs)
-                if (currInput.next().hasClass('tuf-link')) {
+                // disable adding link and events twice (ajax loaded tabs and fields)
+                if (currInput.next('.tuf-link').length) {
                     return true;
                 }
 

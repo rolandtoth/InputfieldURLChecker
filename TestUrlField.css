@@ -1,6 +1,6 @@
 .tuf-link {
     position: absolute;
-    top: 4px;
+    margin-top: 1px;
     right: 16px;
     padding: 0 12px;
     background: transparent;

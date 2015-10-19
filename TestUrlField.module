@@ -1,6 +1,19 @@
 <?php
 
 /**
+ * todo
+ * enabled templates feature
+ * (closed + locked) fields: no input, add link somehow
+ *
+ * Changelog
+ *
+ * v0.85
+ * fixed: ajax-loaded field bug
+ * fixed: link positioning on fields with description/notes
+ *
+ */
+
+/**
  * Class TestUrlField
  */
 class TestUrlField extends WireData implements Module, ConfigurableModule {
@@ -11,7 +24,7 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
         return array(
             'title' => 'Test URL Field',
             'author' => 'Roland Toth',
-            'version' => 82,
+            'version' => 85,
             'summary' => 'Add button to URL fields to test link validity.',
             'href' => '',
             'icon' => 'arrow-right',
@@ -40,7 +53,7 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
 
         $field = $modules->get("InputfieldCheckbox");
         $field->name = "force_http";
-        $field->label = __('Force http');
+        $field->label = __('Force "http://"');
         $field->notes = __('Prepend "http://" to link value (default: on).');
         $field->value = (isset($data['force_http'])) ? $data['force_http'] : 1;
         $field->checked = ($field->value == 1) ? 'checked' : '';
