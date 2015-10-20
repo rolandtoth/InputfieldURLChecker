@@ -24,11 +24,11 @@ Add button to URL fields to test link validity in [ProcessWire CMS](http://proce
 
 ## Screens
 
-**Test URL field in action:**
+**In action:**
 
 ![Test URL field](screens/test-url-field.gif)
 
-**Test URL field options:**
+**Options:**
 
 ![Test URL field options](screens/test-url-field-options.png)
 
@@ -54,9 +54,7 @@ The module currently supports three modes:
 
 If checked, links will always have "http://" prefix, even if the field itself doesn't have it.
 
-This ensures opening external links instead relative ones.
-
-Default is checked.
+This ensures opening external links instead of relative ones.
 
 ### Enabled fields/templates
 
