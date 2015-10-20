@@ -22,6 +22,21 @@ Add button to URL fields to test link validity in [ProcessWire CMS](http://proce
 1. Go to module settings and tweak options.
 
 
+## Screens
+
+**Test URL field in action:**
+
+![Test URL field](screens/test-url-field.gif)
+
+**Test URL field settings:**
+
+![Test URL field settings](screens/test-url-field-settings.png)
+
+**Linkify locked field:**
+
+![Linkify locked field](screens/test-url-field-locked-field.png)
+
+
 ## Options
 
 ### Mode
