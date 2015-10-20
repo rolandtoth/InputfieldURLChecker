@@ -47,3 +47,8 @@ body.tuf-left .InputfieldURL input {
 .tuf-link:hover i {
     color: inherit !important;
 }
+
+.collapsed7.InputfieldURL .InputfieldContent a:hover,
+.collapsed8.InputfieldURL .InputfieldContent a:hover {
+    text-decoration: underline;
+}

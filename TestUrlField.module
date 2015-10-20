@@ -77,7 +77,11 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
     }
 
 
-    public function init() {
+    public function ready() {
+        
+        if(wire('page')->template->name != 'admin') {
+            return false;
+        }
 
         $editedPage = wire('pages')->get($this->config->input->get->id);
 
@@ -90,10 +94,6 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
 
 
     public function addJsConfig(HookEvent $event) {
-
-        if($event->object->template != 'admin') {
-            return false;
-        }
 
         if (method_exists($event->object, 'getPage')) {
             $template = $event->object->getPage()->template->name;

@@ -28,7 +28,7 @@ Add button to URL fields to test link validity in [ProcessWire CMS](http://proce
 
 ![Test URL field](screens/test-url-field.gif)
 
-**Test URL field settings:**
+**Test URL field options:**
 
 ![Test URL field options](screens/test-url-field-options.png)
 
