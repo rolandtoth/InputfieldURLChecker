@@ -30,7 +30,7 @@ Add button to URL fields to test link validity in [ProcessWire CMS](http://proce
 
 **Test URL field settings:**
 
-![Test URL field settings](screens/test-url-field-settings.png)
+![Test URL field options](screens/test-url-field-options.png)
 
 **Linkify locked field:**
 
