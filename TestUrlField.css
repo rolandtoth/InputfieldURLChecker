@@ -11,38 +11,39 @@
     background: transparent;
 }
 
+body.tuf-left .tuf-link {
+    right: auto;
+    left: 16px;
+}
+
 .tuf-link i {
-    color: #c4c4c4;
-    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.99);
+    color: rgba(0, 0, 0, 0.22);
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
     -webkit-transition: color 0.2s;
     -moz-transition: color 0.2s;
     transition: color 0.2s;
 }
 
-.tuf-link:hover {
-    background: rgba(0, 0, 0, 0.02);
-    opacity: 1;
-}
-
 .tuf-link.tuf-hide {
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
+    pointer-events: none !important;
 }
 
 .InputfieldURL .InputfieldContent {
     position: relative;
 }
 
-.InputfieldURL input {
-    padding-right: 40px !important;
+body.tuf-right .InputfieldURL input {
+    padding-right: 36px !important;
 }
 
-.InputfieldURL input:focus + .tuf-link {
-    opacity: 1;
+body.tuf-left .InputfieldURL input {
+    padding-left: 36px !important;
 }
 
-.tuf-link:hover i,
 .InputfieldURL input:focus + .tuf-link i {
-    color: inherit;
+    color: rgba(0, 0, 0, 0.36);
+}
+
+.tuf-link:hover i {
+    color: inherit !important;
 }

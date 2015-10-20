@@ -9,19 +9,25 @@ $(document).ready(function () {
         parent: '.InputfieldURL',
         selector: 'input:not([type="hidden"])',
         lockedFields: '.collapsed7, .collapsed8',
-        testLink: '<a href="#" class="tuf-link" target="_blank"><i class="fa fa-arrow-right"></i></a>',
-        mode: (config.TUF && config.TUF.mode) ? config.TUF.mode : 'button',
-        forceHttp: (config.TUF && config.TUF.forceHttp) ? config.TUF.forceHttp : false,
+        TUFlink: '<a href="#" class="tuf-link" target="_blank"><i class="fa fa-arrow-right"></i></a>',
+        dummyFieldSelector: 'TUF-dummy',
+        mode: (config.TUF && config.TUF.mode) ? config.TUF.mode : 'button-left',
+        forceHttp: (config.TUF && config.TUF.forceHttp) ? config.TUF.forceHttp : true,
         enabled_fields: (config.TUF && config.TUF.enabled_fields) ? config.TUF.enabled_fields : false,
         enabled_templates: (config.TUF && config.TUF.enabled_templates) ? config.TUF.enabled_templates : false,
         template: (config.TUF && config.TUF.template) ? config.TUF.template : false
     };
 
+    // get button height with a dummy element
+    $('body').append('<input class="' + TUF.dummyFieldSelector + '">');
+    TUF.btnHeight = $('.' + TUF.dummyFieldSelector).outerHeight() - 2;
+    $('.' + TUF.dummyFieldSelector).remove();
+
     TUF.selector = TUF.parent + ' ' + TUF.selector;
 
     // continue if template is not among enabled templates
     if (TUF.enabled_templates && TUF.template) {
-        if(TUF.enabled_templates.indexOf(TUF.template) === -1) {
+        if (TUF.enabled_templates.indexOf(TUF.template) === -1) {
             return true;
         }
     }
@@ -66,16 +72,10 @@ $(document).ready(function () {
                 // set link height
                 setTimeout(function () {
 
-                    var btnHeight;
-
-                    if (TUF.mode === 'button') {
-                        btnHeight = currInput.outerHeight() - 2;
-                    }
-
-                    if (btnHeight > 0) {
+                    if (TUF.btnHeight > 0) {
                         currInput.next('.tuf-link').css({
-                            'height': btnHeight + 'px',
-                            'line-height': btnHeight - 1 + 'px'
+                            'height': TUF.btnHeight + 'px',
+                            'line-height': TUF.btnHeight - 1 + 'px'
                         });
                     }
                 }, 0);
@@ -85,9 +85,15 @@ $(document).ready(function () {
                     return true;
                 }
 
-                if (TUF.mode === 'button') {
+                if (TUF.mode === 'button-right' || TUF.mode === 'button-left') {
 
-                    currInput.after(TUF.testLink);
+                    currInput.after(TUF.TUFlink);
+
+                    if (TUF.mode === 'button-left') {
+                        $('body').addClass('tuf-left');
+                    } else {
+                        $('body').addClass('tuf-right');
+                    }
 
                     currInput.on('keyup fieldchange', function () {
 

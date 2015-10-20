@@ -10,15 +10,17 @@
  */
 class TestUrlField extends WireData implements Module, ConfigurableModule {
 
+
     public $configData;
+
 
     public static function getModuleInfo() {
         return array(
             'title' => 'Test URL Field',
             'author' => 'Roland Toth',
-            'version' => 90,
+            'version' => 92,
             'summary' => 'Add button to URL fields to test link validity.',
-            'href' => '',
+            'href' => 'https://github.com/rolandtoth/TestUrlField',
             'icon' => 'arrow-right',
             'singular' => true,
             'autoload' => true
@@ -36,16 +38,17 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
         $field->name = "mode";
         $field->label = __("Mode");
         $field->notes = __("Whether to use a dedicated button or a key/click combo to open URL field contents.");
-        $field->addOption('button', __('Button (default)'));
+        $field->addOption('button-left', __('Button (on left)'));
+        $field->addOption('button-right', __('Button (on right)'));
         $field->addOption('ctrl-shift-click', __('Ctrl + Shift + Click'));
         $field->addOption('ctrl-shift-enter', __('Ctrl + Shift + Enter'));
-        $field->value = isset($data['mode']) ? $data['mode'] : 'button';
+        $field->value = isset($data['mode']) ? $data['mode'] : 'button-left';
         $field->columnWidth = 100;
         $fields->add($field);
 
         $field = $modules->get("InputfieldCheckbox");
         $field->name = "force_http";
-        $field->label = __('Force "http://"');
+        $field->label = __('Force HTTP');
         $field->notes = __('Prepend "http://" to link value (default: on).');
         $field->value = (isset($data['force_http'])) ? $data['force_http'] : 1;
         $field->checked = ($field->value == 1) ? 'checked' : '';
@@ -76,22 +79,41 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
 
     public function init() {
 
-        $this->addHookAfter('ProcessPageEdit::execute', $this, 'addJsConfig');
+        $editedPage = wire('pages')->get($this->config->input->get->id);
 
-        $this->config->scripts->add($this->config->urls->siteModules . $this->className . '/' . $this->className . '.js?v=' . time());
-        $this->config->styles->add($this->config->urls->siteModules . $this->className . '/' . $this->className . '.css?v=' . time());
+        if (($editedPage instanceof NullPage)) {
+            $this->addHookBefore('Page::render', $this, 'addJsConfig');
+        }
+
+        $this->addHookBefore('ProcessPageEdit::execute', $this, 'addJsConfig');
     }
 
 
     public function addJsConfig(HookEvent $event) {
+
+        if($event->object->template != 'admin') {
+            return false;
+        }
+
+        if (method_exists($event->object, 'getPage')) {
+            $template = $event->object->getPage()->template->name;
+        } else {
+            $template = $event->object->template->name;
+        }
+
         $this->config->js("TUF", array(
-                'mode' => isset($this->configData['mode']) ? $this->configData['mode'] : 'button',
+                'mode' => isset($this->configData['mode']) ? $this->configData['mode'] : 'button-left',
                 'forceHttp' => (bool)(isset($this->configData['force_http']) ? $this->configData['force_http'] : 1),
                 'enabled_fields' => isset($this->configData['enabled_fields']) ? $this->configData['enabled_fields'] : '',
                 'enabled_templates' => isset($this->configData['enabled_templates']) ? $this->configData['enabled_templates'] : '',
-                'template' => $event->object->getPage()->template->name
+                'template' => $template
             )
         );
+
+        $this->config->scripts->add($this->config->urls->siteModules . $this->className . '/' . $this->className . '.js?v=' . time());
+        $this->config->styles->add($this->config->urls->siteModules . $this->className . '/' . $this->className . '.css?v=' . time());
+
+        return false;
     }
 
 
