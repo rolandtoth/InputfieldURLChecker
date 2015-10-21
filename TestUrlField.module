@@ -10,18 +10,14 @@
  */
 class TestUrlField extends WireData implements Module, ConfigurableModule {
 
-
-    public $configData;
-
-
     public static function getModuleInfo() {
         return array(
-            'title' => 'Test URL Field',
-            'author' => 'Roland Toth',
-            'version' => 92,
-            'summary' => 'Add button to URL fields to test link validity.',
-            'href' => 'https://github.com/rolandtoth/TestUrlField',
-            'icon' => 'arrow-right',
+            'title'    => 'Test URL Field',
+            'author'   => 'Roland Toth',
+            'version'  => 95,
+            'summary'  => 'Add button to URL fields to test link validity.',
+            'href'     => 'https://github.com/rolandtoth/TestUrlField',
+            'icon'     => 'arrow-right',
             'singular' => true,
             'autoload' => true
         );
@@ -34,52 +30,92 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
 
         $fields = new InputfieldWrapper();
 
-        $field = $modules->get("InputfieldRadios");
-        $field->name = "mode";
-        $field->label = __("Mode");
-        $field->notes = __("Whether to use a dedicated button or a key/click combo to open URL field contents.");
-        $field->addOption('button-left', __('Button (on left)'));
-        $field->addOption('button-right', __('Button (on right)'));
-        $field->addOption('ctrl-shift-click', __('Ctrl + Shift + Click'));
-        $field->addOption('ctrl-shift-enter', __('Ctrl + Shift + Enter'));
-        $field->value = isset($data['mode']) ? $data['mode'] : 'button-left';
+
+        // Mode
+        $field              = $modules->get('InputfieldRadios');
+        $field->name        = 'mode';
+        $field->label       = __('Mode', __FILE__);
+        $field->description = __('Whether to use a dedicated button or a key/click combo to open URL field contents.', __FILE__);
+        $field->addOption('button-left', __('Button (on left)', 'TUF'));
+        $field->addOption('button-right', __('Button (on right)', 'TUF'));
+        $field->addOption('ctrl-shift-click', __('Ctrl + Shift + Click', 'TUF'));
+        $field->addOption('ctrl-shift-enter', __('Ctrl + Shift + Enter', 'TUF'));
+        $field->value       = isset($data['mode']) ? $data['mode'] : 'button-left';
         $field->columnWidth = 100;
         $fields->add($field);
 
-        $field = $modules->get("InputfieldCheckbox");
-        $field->name = "force_http";
-        $field->label = __('Force HTTP');
-        $field->notes = __('Prepend "http://" to link value (default: on).');
-        $field->value = (isset($data['force_http'])) ? $data['force_http'] : 1;
-        $field->checked = ($field->value == 1) ? 'checked' : '';
+
+        // Force http prefix
+        $field              = $modules->get('InputfieldCheckbox');
+        $field->name        = 'force_http';
+        $field->label       = __('Force HTTP prefix', __FILE__);
+        $field->description = __('Prepend "http://" to link value (default: on).', __FILE__);
+        $field->value       = (isset($data['force_http'])) ? $data['force_http'] : 1;
+        $field->checked     = ($field->value == 1) ? 'checked' : '';
         $field->columnWidth = 100;
         $fields->add($field);
 
-        $field = wire('modules')->get('InputfieldText');
-        $field->name = 'enabled_fields';
-        $field->label = __('Enabled fields');
-        $field->attr('placeholder', 'my_field, another_field');
-        $field->columnWidth = 100;
-        $field->value = isset($data['enabled_fields']) ? $data['enabled_fields'] : '';
-        $field->notes = __('Comma-separated list of field names where module should be enabled. Leave empty to enable all.');
-        $fields->add($field);
 
-        $field = wire('modules')->get('InputfieldText');
-        $field->name = 'enabled_templates';
-        $field->label = __('Enabled templates');
-        $field->attr('placeholder', 'basic-page, my-page');
-        $field->columnWidth = 100;
+        $fieldset              = new InputfieldFieldset();
+        $fieldset->label       = __('Restrict module', __FILE__);
+        $fieldset->description = __('List of templates/fields where module should be enabled. If none selected, all will used.', __FILE__);
+
+        // Enabled templates
+        $field              = $modules->get('InputfieldAsmSelect');
+        $field->name        = 'enabled_templates';
+        $field->label       = __('Enabled templates', __FILE__);
+        $field->attr('data-asm-placeholder', __('Add templates...', __FILE__));
+        $field->columnWidth = 50;
+
+        foreach (wire('templates') as $t) {
+            $field->addOption($t->name, self::getFormattedOptionName($t));
+        }
+
         $field->value = isset($data['enabled_templates']) ? $data['enabled_templates'] : '';
-        $field->notes = __('Comma-separated list of template names where module should be enabled. Leave empty to enable all.');
-        $fields->add($field);
+        $fieldset->add($field);
+
+
+        // Enabled fields asm select
+
+        $url_fields = wire('fields')->find('type=FieldtypeURL');
+
+        // add asm select only if there is any URL type field
+        if (count($url_fields)) {
+
+            $field              = $modules->get('InputfieldAsmSelect');
+            $field->name        = 'enabled_fields';
+            $field->label       = __('Enabled fields', __FILE__);
+            $field->columnWidth = 50;
+
+            foreach ($url_fields as $f) {
+                $field->addOption($f->name, self::getFormattedOptionName($f));
+            }
+
+            $field->attr('data-asm-placeholder', __('Add fields...', __FILE__));
+
+            $field->value = isset($data['enabled_fields']) ? $data['enabled_fields'] : '';
+
+        } else {
+
+            // add info that no URL type fields are available
+            $field              = $modules->get('InputfieldMarkup');
+            $field->name        = 'no_url_fields';
+            $field->label       = __('Enabled fields', __FILE__);
+            $field->columnWidth = 50;
+            $field->markupText  = __('There are currently no fields of type URL available in the system.', __FILE__);
+        }
+
+        $fieldset->add($field);
+
+        $fields->add($fieldset);
 
         return $fields;
     }
 
 
     public function ready() {
-        
-        if(wire('page')->template->name != 'admin') {
+
+        if (wire('page')->template->name != 'admin') {
             return false;
         }
 
@@ -95,30 +131,32 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
 
     public function addJsConfig(HookEvent $event) {
 
+        $configData = wire('modules')->getModuleConfigData($this);
+
         if (method_exists($event->object, 'getPage')) {
             $template = $event->object->getPage()->template->name;
         } else {
             $template = $event->object->template->name;
         }
 
-        $this->config->js("TUF", array(
-                'mode' => isset($this->configData['mode']) ? $this->configData['mode'] : 'button-left',
-                'forceHttp' => (bool)(isset($this->configData['force_http']) ? $this->configData['force_http'] : 1),
-                'enabled_fields' => isset($this->configData['enabled_fields']) ? $this->configData['enabled_fields'] : '',
-                'enabled_templates' => isset($this->configData['enabled_templates']) ? $this->configData['enabled_templates'] : '',
-                'template' => $template
+        $this->config->js('TUF', array(
+                'mode'              => isset($configData['mode']) ? $configData['mode'] : 'button-left',
+                'forceHttp'         => (bool) (isset($configData['force_http']) ? $configData['force_http'] : 1),
+                'enabled_fields'    => isset($configData['enabled_fields']) ? implode(', ', $configData['enabled_fields']) : '',
+                'enabled_templates' => isset($configData['enabled_templates']) ? implode(', ', $configData['enabled_templates']) : '',
+                'template'          => $template
             )
         );
 
-        $this->config->scripts->add($this->config->urls->siteModules . $this->className . '/' . $this->className . '.js?v=' . time());
-        $this->config->styles->add($this->config->urls->siteModules . $this->className . '/' . $this->className . '.css?v=' . time());
+        $this->config->scripts->add($this->config->urls->siteModules . __CLASS__ . '/' . __CLASS__ . '.js?v=' . time());
+        $this->config->styles->add($this->config->urls->siteModules . __CLASS__ . '/' . __CLASS__ . '.css?v=' . time());
 
         return false;
     }
 
 
-    public function __construct() {
-        $this->configData = wire('modules')->getModuleConfigData($this);
+    public function getFormattedOptionName($obj) {
+        return !empty($obj->label) ? $obj->label . ' (' . $obj->name . ')' : $obj->name;
     }
 
 }

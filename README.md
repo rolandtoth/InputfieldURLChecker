@@ -5,13 +5,13 @@ Add button to URL fields to test link validity in [ProcessWire CMS](http://proce
 
 ## Features
 
-- adds button to URL fields to test link validity (opens in a new window)
+- add button to URL fields to test link validity (opens in a new window)
 - linkify locked URL fields
 - link visible only if field is not empty
 - compatible with the Default & Reno admin themes
 - button and key/click combo modes
 - force "http://" prefix (optional)
-- limit module to enabled fields only
+- restrict module to selected templates or fields
 - ajax-loaded tabs & fields ready
 
 
@@ -45,8 +45,8 @@ You can choose whether to use a dedicated button or a key/click combo to open UR
 
 The module currently supports three modes:
 
-- Button (on the left): adds a test link button to the left of the URL field (default)
-- Button (on the right): adds a test link button to the right of the URL field
+- Button (on left): adds a test link button to the left of the URL field (default)
+- Button (on right): adds a test link button to the right of the URL field
 - Ctrl + Shift + Click: link can be tested by holding down ctrl+shift and clicking on the field
 - Ctrl + Shift + Enter: link can be tested by holding down ctrl+shift+enter while caret is in the field
 
@@ -54,11 +54,11 @@ The module currently supports three modes:
 
 If checked, links will always have "http://" prefix, even if the field itself doesn't have it.
 
-This ensures opening external links instead of relative ones.
+This option ensures opening external links instead of relative ones.
 
-### Enabled fields/templates
+### Restrict module
 
-Comma-separated list of field/template names where module should be enabled. Leave empty to enable all.
+Here you can set templates and/or fields where the module will be enabled. If none selected, module will be active on all templates and all URL fields.
 
 Note: if used, module will be disabled on all non-listed fields/templates.
 

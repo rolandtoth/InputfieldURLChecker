@@ -8,6 +8,7 @@ $(document).ready(function () {
     var TUF = {
         parent: '.InputfieldURL',
         selector: 'input:not([type="hidden"])',
+        asmSelectPlaceholder: 'data-asm-placeholder',
         lockedFields: '.collapsed7, .collapsed8',
         TUFlink: '<a href="#" class="tuf-link" target="_blank"><i class="fa fa-arrow-right"></i></a>',
         dummyFieldSelector: 'TUF-dummy',
@@ -18,19 +19,23 @@ $(document).ready(function () {
         template: (config.TUF && config.TUF.template) ? config.TUF.template : false
     };
 
+
+    // stop if template is not among enabled templates
+    // but skip if on own module edit page
+    if ($('form#ModuleEditForm').attr('action') !== 'edit?name=TestUrlField') {
+        if (TUF.enabled_templates && TUF.template) {
+            if (TUF.enabled_templates.indexOf(TUF.template) === -1) {
+                return true;
+            }
+        }
+    }
+
     // get button height with a dummy element
     $('body').append('<input class="' + TUF.dummyFieldSelector + '">');
     TUF.btnHeight = $('.' + TUF.dummyFieldSelector).outerHeight() - 2;
     $('.' + TUF.dummyFieldSelector).remove();
 
     TUF.selector = TUF.parent + ' ' + TUF.selector;
-
-    // continue if template is not among enabled templates
-    if (TUF.enabled_templates && TUF.template) {
-        if (TUF.enabled_templates.indexOf(TUF.template) === -1) {
-            return true;
-        }
-    }
 
     $(document).on('ready reloaded wiretabclick', initTUF);
 
@@ -100,8 +105,10 @@ $(document).ready(function () {
                         var url = getUrl(currInput.val(), TUF.forceHttp),
                             link = currInput.next('.tuf-link');
 
+                        link.attr('href', url);
+
                         if (url) {
-                            link.attr('href', url).removeClass('tuf-hide');
+                            link.removeClass('tuf-hide');
                         } else {
                             link.addClass('tuf-hide')
                         }
@@ -139,9 +146,33 @@ $(document).ready(function () {
             });
         }
     }
+
+
+    /**
+     * Add placeholder to asmSelect
+     */
+    $(function () {
+        $('select[' + TUF.asmSelectPlaceholder + '!=""]').each(function () {
+
+            var placeholder = $(this).data('asmPlaceholder');
+
+            if (placeholder) {
+                $(this).parent().find('.asmSelect').find('option:first').attr('selected', true).attr('disabled', true).text(placeholder);
+            }
+        });
+
+    });
+
 });
 
 
+/**
+ * Get url with or without "http://"
+ *
+ * @param url
+ * @param forcePrefix
+ * @returns {*}
+ */
 function getUrl(url, forcePrefix) {
     var prefix = 'http://';
     return (forcePrefix && url != "" && url.indexOf(prefix) === -1) ? prefix + url : url;

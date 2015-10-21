@@ -17,8 +17,8 @@ body.tuf-left .tuf-link {
 }
 
 .tuf-link i {
-    color: rgba(0, 0, 0, 0.22);
-    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
     -webkit-transition: color 0.2s;
     -moz-transition: color 0.2s;
     transition: color 0.2s;
@@ -41,11 +41,15 @@ body.tuf-left .InputfieldURL input {
 }
 
 .InputfieldURL input:focus + .tuf-link i {
-    color: rgba(0, 0, 0, 0.36);
+    color: rgba(0, 0, 0, 0.32);
 }
 
 .tuf-link:hover i {
     color: inherit !important;
+}
+
+.tuf-link:active i {
+    font-size: 0.88em !important;
 }
 
 .collapsed7.InputfieldURL .InputfieldContent a:hover,
