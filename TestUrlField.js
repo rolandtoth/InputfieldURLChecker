@@ -13,7 +13,7 @@ $(document).ready(function () {
         TUFlink: '<a href="#" class="tuf-link" target="_blank"><i class="fa fa-arrow-right"></i></a>',
         dummyFieldSelector: 'TUF-dummy',
         mode: (config.TUF && config.TUF.mode) ? config.TUF.mode : 'button-left',
-        forceHttp: (config.TUF && config.TUF.forceHttp) ? config.TUF.forceHttp : true,
+        forceHttp: (config.TUF && config.TUF.forceHttp !== 'undefined') ? config.TUF.forceHttp : true,
         enabled_fields: (config.TUF && config.TUF.enabled_fields) ? config.TUF.enabled_fields : false,
         enabled_templates: (config.TUF && config.TUF.enabled_templates) ? config.TUF.enabled_templates : false,
         template: (config.TUF && config.TUF.template) ? config.TUF.template : false
@@ -177,6 +177,6 @@ $(document).ready(function () {
  * @returns {*}
  */
 function getUrl(url, forcePrefix) {
-    var prefix = 'http://';
-    return (forcePrefix && url != "" && url.indexOf(prefix) === -1) ? prefix + url : url;
+    var prefix = 'http';
+    return (forcePrefix && url != "" && url.indexOf(prefix) === -1) ? prefix + '://' + url : url;
 }
