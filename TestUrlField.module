@@ -58,7 +58,7 @@ class TestUrlField extends WireData implements Module, ConfigurableModule {
 
         $fieldset              = new InputfieldFieldset();
         $fieldset->label       = __('Restrict module', __FILE__);
-        $fieldset->description = __('List of templates/fields where module should be enabled. If none selected, all will used.', __FILE__);
+        $fieldset->description = __('List of templates/fields where module should be active. Select none to enable globally.', __FILE__);
 
         // Enabled templates
         $field              = $modules->get('InputfieldAsmSelect');
