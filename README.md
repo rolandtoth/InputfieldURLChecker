@@ -6,7 +6,7 @@ Add button to URL type fields to check URL validity in [ProcessWire CMS](http://
 ## Features
 
 - enhance FieldtypeURL inputs with a button to open typed url in a new window
-- button and key/click combo modes
+- button and/or hotkey modes
 - linkify locked URL fields
 - force "http://" prefix (optional)
 - restrict module to selected templates or fields
@@ -44,8 +44,7 @@ You can choose whether to use a dedicated button or a key/click combo to open UR
 
 The module currently supports three modes:
 
-- Button (on left): adds a URL check button to the left of the field (default)
-- Button (on right): adds a URL check button to the right of the field
+- Button: adds a URL check button to the left or to the right side of the field
 - Ctrl + Shift + Click: check URL by holding down ctrl+shift and clicking on the field
 - Ctrl + Shift + Enter: check URL by holding down ctrl+shift+enter while caret is in the field
 
