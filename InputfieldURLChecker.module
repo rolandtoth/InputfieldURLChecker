@@ -2,7 +2,7 @@
 
 /**
  * InputfieldURLChecker module for ProcessWire
- * https://goo.gl/KBXssq
+ * https://github.com/rolandtoth/InputfieldURLChecker
  */
 
 /**
@@ -12,7 +12,7 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
 
     public static function getModuleInfo() {
         return array(
-            'title' => 'InputfieldURL Checker',
+            'title' => 'InputfieldURLChecker',
             'author' => 'Roland Toth',
             'version' => 98,
             'summary' => 'Admin helper that adds button to URL type fields to open typed URL in a new window.',
