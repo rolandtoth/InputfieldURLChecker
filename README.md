@@ -1,7 +1,7 @@
-Test URL Field module for ProcessWire
+InputfieldURLChecker module for ProcessWire
 ================
 
-Add button to URL type fields to test link validity in [ProcessWire CMS](http://processwire.com/).
+Add button to URL type fields to check URL validity in [ProcessWire CMS](http://processwire.com/).
 
 ## Features
 
@@ -16,7 +16,7 @@ Add button to URL type fields to test link validity in [ProcessWire CMS](http://
 
 ## Usage
 
-1. Install the module. All URL type fields will automatically have a test link button.
+1. Install the module. All URL type fields will automatically get a URL check button.
 
 1. Go to module settings and tweak options.
 
@@ -25,15 +25,15 @@ Add button to URL type fields to test link validity in [ProcessWire CMS](http://
 
 **In action:**
 
-![Test URL field](screens/test-url-field.gif)
+![InputfieldURLChecker](screens/InputfieldURLChecker.gif)
 
 **Options:**
 
-![Test URL field options](screens/test-url-field-options.png)
+![InputfieldURLChecker options](screens/InputfieldURLChecker-options.png)
 
 **Linkify locked field:**
 
-![Linkify locked field](screens/test-url-field-locked-field.png)
+![Linkify locked field](screens/InputfieldURLChecker-locked-field.png)
 
 
 ## Options
@@ -44,10 +44,10 @@ You can choose whether to use a dedicated button or a key/click combo to open UR
 
 The module currently supports three modes:
 
-- Button (on left): adds a test link button to the left of the URL field (default)
-- Button (on right): adds a test link button to the right of the URL field
-- Ctrl + Shift + Click: link can be tested by holding down ctrl+shift and clicking on the field
-- Ctrl + Shift + Enter: link can be tested by holding down ctrl+shift+enter while caret is in the field
+- Button (on left): adds a URL check button to the left of the field (default)
+- Button (on right): adds a URL check button to the right of the field
+- Ctrl + Shift + Click: check URL by holding down ctrl+shift and clicking on the field
+- Ctrl + Shift + Enter: check URL by holding down ctrl+shift+enter while caret is in the field
 
 ### Force HTTP prefix
 
@@ -64,11 +64,11 @@ Note: if used, module will be disabled on all non-listed fields/templates.
 
 ## Troubleshooting and feedback
 
-Forum: [https://processwire.com/talk/topic/11209-modulette-test-url-field/](https://processwire.com/talk/topic/11209-modulette-test-url-field/)
+Forum: [https://processwire.com/talk/topic/11209-modulette-inputfieldurlchecker/](https://processwire.com/talk/topic/11209-modulette-inputfieldurlchecker/)
 
 
 ## License
 
 Licensed under the MIT license.
 
-"Test URL Field" is provided "as-is" without warranty of any kind, express, implied or otherwise, including without limitation, any warranty of merchantability or fitness for a particular purpose. In no event shall the author of this software be held liable for data loss, damages, loss of profits or any other kind of loss while using or misusing this software.
+"InputfieldURLChecker" is provided "as-is" without warranty of any kind, express, implied or otherwise, including without limitation, any warranty of merchantability or fitness for a particular purpose. In no event shall the author of this software be held liable for data loss, damages, loss of profits or any other kind of loss while using or misusing this software.
