@@ -25,15 +25,15 @@ Admin helper to add button or hotkey to URL type fields to check link in [Proces
 
 **In action:**
 
-![InputfieldURLChecker](screens/InputfieldURLChecker.gif)
+![InputfieldURLChecker](https://github.com/rolandtoth/InputfieldURLChecker/raw/master/InputfieldURLChecker.gif)
 
 **Options:**
 
-![InputfieldURLChecker options](screens/InputfieldURLChecker-options.png)
+![InputfieldURLChecker options](https://github.com/rolandtoth/InputfieldURLChecker/raw/master/InputfieldURLChecker-options.png)
 
 **Linkify locked field:**
 
-![Linkify locked field](screens/InputfieldURLChecker-locked-field.png)
+![Linkify locked field](https://github.com/rolandtoth/InputfieldURLChecker/raw/master/InputfieldURLChecker-locked-field.png)
 
 
 ## Options
