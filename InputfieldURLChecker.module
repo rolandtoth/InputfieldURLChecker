@@ -14,8 +14,8 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         return array(
             'title' => 'InputfieldURLChecker',
             'author' => 'Roland Toth',
-            'version' => 98,
-            'summary' => 'Admin helper that adds button to URL type fields to open typed URL in a new window.',
+            'version' => 99,
+            'summary' => 'Admin helper to add button or hotkey to URL type fields to check link.',
             'href' => 'https://github.com/rolandtoth/InputfieldURLChecker',
             'icon' => 'arrow-right',
             'singular' => true,

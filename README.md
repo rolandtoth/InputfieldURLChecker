@@ -1,7 +1,7 @@
 InputfieldURLChecker module for ProcessWire
 ================
 
-Add button to URL type fields to check URL validity in [ProcessWire CMS](http://processwire.com/).
+Admin helper to add button or hotkey to URL type fields to check link in [ProcessWire CMS](http://processwire.com/).
 
 ## Features
 
