@@ -48,6 +48,12 @@ The module currently supports three modes:
 - Ctrl + Shift + Click: check URL by holding down ctrl+shift and clicking on the field
 - Ctrl + Shift + Enter: check URL by holding down ctrl+shift+enter while caret is in the field
 
+### Target options
+
+By default the link is opened in a lightbox. From version 1.01 links can be opened in an iframe that slides in from the left and clicking on its overly closes it.
+
+Note: if the target website doesn't allow embedding from another domain then the iframe mode will fail.
+
 ### Force HTTP prefix
 
 If checked, links will always have "http://" prefix, even if the field itself doesn't contain it.
