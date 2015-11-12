@@ -12,12 +12,12 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
 
     public static function getModuleInfo() {
         return array(
-            'title' => 'InputfieldURLChecker',
-            'author' => 'Roland Toth',
-            'version' => 99,
-            'summary' => 'Admin helper to add button or hotkey to URL type fields to check link.',
-            'href' => 'https://github.com/rolandtoth/InputfieldURLChecker',
-            'icon' => 'arrow-right',
+            'title'    => 'InputfieldURLChecker',
+            'author'   => 'Roland Toth',
+            'version'  => 101,
+            'summary'  => 'Admin helper for adding button or hotkey to FieldtypeURL to check link.',
+            'href'     => 'https://github.com/rolandtoth/InputfieldURLChecker',
+            'icon'     => 'arrow-right',
             'singular' => true,
             'autoload' => true
         );
@@ -31,33 +31,54 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         $fields = new InputfieldWrapper();
 
 
-        $fieldset = new InputfieldFieldset();
-        $fieldset->label = __('Select modes', __FILE__);
-        $fieldset->description = __('Whether to use a button or a hotkey to open URL.', __FILE__);
+        $fieldset              = new InputfieldFieldset();
+        $fieldset->label       = __('Mode options', __FILE__);
+        $fieldset->description = __('Check the modes you would like to use the module.', __FILE__);
 
         // Mode
-        $field = $modules->get('InputfieldCheckboxes');
-        $field->name = 'mode';
-        $field->label = __('Mode', __FILE__);
+        $field           = $modules->get('InputfieldCheckboxes');
+        $field->name     = 'mode';
+        $field->label    = __('Mode', __FILE__);
         $field->required = true;
         $field->addOption('button', __('Button', 'IUC'));
         $field->addOption('ctrl-shift-click', __('Ctrl + Shift + Click', 'IUC'));
         $field->addOption('ctrl-shift-enter', __('Ctrl + Shift + Enter', 'IUC'));
-        $field->value = isset($data['mode']) ? $data['mode'] : 'button';
+        $field->value       = isset($data['mode']) ? $data['mode'] : 'button';
         $field->columnWidth = 50;
         $fieldset->add($field);
 
         // Mode - button
-        $field = $modules->get('InputfieldRadios');
-        $field->name = 'button_position';
+        $field        = $modules->get('InputfieldRadios');
+        $field->name  = 'button_position';
         $field->label = __('Button position', __FILE__);
         $field->addOption('button-left', __('Left side of the field', 'IUC'));
         $field->addOption('button-right', __('Right side of the field', 'IUC'));
-        $field->value = isset($data['button_position']) ? $data['button_position'] : 'button-left';
-        $field->required = true;
-        $field->showIf = 'mode=button';
-        $field->requiredIf = 'mode=button';
+        $field->value       = isset($data['button_position']) ? $data['button_position'] : 'button-left';
+        $field->required    = true;
+        $field->showIf      = 'mode=button';
+        $field->requiredIf  = 'mode=button';
         $field->columnWidth = 50;
+        $fieldset->add($field);
+
+
+        $fields->add($fieldset);
+
+
+        // Target
+        $fieldset              = new InputfieldFieldset();
+        $fieldset->label       = __('Target options', __FILE__);
+
+
+        // Mode - button
+        $field        = $modules->get('InputfieldRadios');
+        $field->name  = 'target';
+        $field->label = __('Open link in...', __FILE__);
+        $field->notes = __('Iframe mode fails if the target website does not allow iframe embed.', __FILE__);
+        $field->addOption('new-window', __('new window or tab (default)', 'IUC'));
+        $field->addOption('iframe', __('iframe', 'IUC'));
+        $field->value       = isset($data['target']) ? $data['target'] : 'new-window';
+        $field->required    = true;
+        $field->columnWidth = 100;
         $fieldset->add($field);
 
 
@@ -66,14 +87,14 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
 
         // Force http prefix
 
-        $fieldset = new InputfieldFieldset();
+        $fieldset        = new InputfieldFieldset();
         $fieldset->label = __('General', __FILE__);
 
-        $field = $modules->get('InputfieldCheckbox');
-        $field->name = 'force_http';
-        $field->label = __('Force HTTP prefix', __FILE__);
-        $field->value = (isset($data['force_http'])) ? $data['force_http'] : 1;
-        $field->checked = ($field->value == 1) ? 'checked' : '';
+        $field              = $modules->get('InputfieldCheckbox');
+        $field->name        = 'force_http';
+        $field->label       = __('Force HTTP prefix', __FILE__);
+        $field->value       = (isset($data['force_http'])) ? $data['force_http'] : 1;
+        $field->checked     = ($field->value == 1) ? 'checked' : '';
         $field->columnWidth = 100;
         $fieldset->add($field);
 
@@ -81,14 +102,14 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
 
 
         // Restrict module fieldset
-        $fieldset = new InputfieldFieldset();
-        $fieldset->label = __('Restrict module', __FILE__);
+        $fieldset              = new InputfieldFieldset();
+        $fieldset->label       = __('Restrict module', __FILE__);
         $fieldset->description = __('List of templates/fields where module should be active. Select none to enable globally.', __FILE__);
 
 
         // Enabled templates
-        $field = $modules->get('InputfieldAsmSelect');
-        $field->name = 'enabled_templates';
+        $field        = $modules->get('InputfieldAsmSelect');
+        $field->name  = 'enabled_templates';
         $field->label = __('Enabled templates', __FILE__);
         $field->attr('data-asm-placeholder', __('Add templates...', __FILE__));
         $field->columnWidth = 50;
@@ -108,9 +129,9 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         // add asm select only if there is any URL type field
         if (count($url_fields)) {
 
-            $field = $modules->get('InputfieldAsmSelect');
-            $field->name = 'enabled_fields';
-            $field->label = __('Enabled fields', __FILE__);
+            $field              = $modules->get('InputfieldAsmSelect');
+            $field->name        = 'enabled_fields';
+            $field->label       = __('Enabled fields', __FILE__);
             $field->columnWidth = 50;
 
             foreach ($url_fields as $f) {
@@ -124,11 +145,11 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         } else {
 
             // add info that no URL type fields are available
-            $field = $modules->get('InputfieldMarkup');
-            $field->name = 'no_url_fields';
-            $field->label = __('Enabled fields', __FILE__);
+            $field              = $modules->get('InputfieldMarkup');
+            $field->name        = 'no_url_fields';
+            $field->label       = __('Enabled fields', __FILE__);
             $field->columnWidth = 50;
-            $field->markupText = __('There are currently no fields of type URL available in the system.', __FILE__);
+            $field->markupText  = __('There are currently no fields of type URL available in the system.', __FILE__);
         }
 
         $fieldset->add($field);
@@ -152,6 +173,8 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         }
 
         $this->addHookBefore('ProcessPageEdit::execute', $this, 'addJsConfig');
+
+        return false;
     }
 
 
@@ -166,12 +189,13 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         }
 
         $this->config->js('IUC', array(
-                'mode' => isset($configData['mode']) ? $configData['mode'] : 'button',
-                'buttonPosition' => isset($configData['button_position']) ? $configData['button_position'] : 'button-left',
-                'forceHttp' => (bool)(isset($configData['force_http']) ? $configData['force_http'] : 1),
-                'enabled_fields' => isset($configData['enabled_fields']) ? implode(', ', $configData['enabled_fields']) : '',
+                'mode'              => isset($configData['mode']) ? $configData['mode'] : 'button',
+                'target'            => isset($configData['target']) ? $configData['target'] : 'new-window',
+                'buttonPosition'    => isset($configData['button_position']) ? $configData['button_position'] : 'button-left',
+                'forceHttp'         => (bool) (isset($configData['force_http']) ? $configData['force_http'] : 1),
+                'enabled_fields'    => isset($configData['enabled_fields']) ? implode(', ', $configData['enabled_fields']) : '',
                 'enabled_templates' => isset($configData['enabled_templates']) ? implode(', ', $configData['enabled_templates']) : '',
-                'template' => $template
+                'template'          => $template
             )
         );
 

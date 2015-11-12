@@ -3,7 +3,7 @@
  * https://github.com/rolandtoth/InputfieldURLChecker
  */
 
-.iuc-link {
+.iuc-button {
     position: absolute;
     margin-top: 1px;
     right: 16px;
@@ -11,12 +11,77 @@
     background: transparent;
 }
 
-body.iuc-button-left .iuc-link {
+.iuc-overlay {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 990;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.iuc-overlay:hover {
+    cursor: pointer;
+}
+
+.iuc-iframe {
+    border: none;
+    display: block;
+    width: 1600px;
+    max-width: 50%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    overflow: auto;
+    background: #fff url('loading.gif') center center no-repeat;
+    z-index: 1020;
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    -webkit-transition: -webkit-transform 0.25s;
+    transition: transform 0.25s;
+}
+
+.iuc-iframe-error {
+    display: block;
+    width: 1600px;
+    max-width: 50%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 30px;
+    overflow: hidden;
+    background: #fff;
+    z-index: 1030;
+}
+
+.iuc-iframe-error p {
+    text-align: center;
+    position: relative;
+    max-width: 90%;
+    margin: 0 auto;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.iuc-iframe-animate {
+    transform: translateX(0);
+    -webkit-transform: translateX(0);
+}
+
+.iuc-iframe-loaded {
+    background-image: none;
+}
+
+body.iuc-button-left .iuc-button {
     right: auto;
     left: 16px;
 }
 
-.iuc-link i {
+.iuc-button i {
     color: rgba(0, 0, 0, 0.2);
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
     -webkit-transition: color 0.2s;
@@ -24,7 +89,7 @@ body.iuc-button-left .iuc-link {
     transition: color 0.2s;
 }
 
-.iuc-link.iuc-hide {
+.iuc-button.iuc-hide {
     pointer-events: none !important;
 }
 
@@ -40,15 +105,15 @@ body.iuc-button-left .InputfieldURL input {
     padding-left: 36px !important;
 }
 
-.InputfieldURL input:focus + .iuc-link i {
+.InputfieldURL input:focus + .iuc-button i {
     color: rgba(0, 0, 0, 0.32);
 }
 
-.iuc-link:hover i {
+.iuc-button:not(.iuc-hide):hover i {
     color: inherit !important;
 }
 
-.iuc-link:active i {
+.iuc-button:active i {
     font-size: 0.88em !important;
 }
 
