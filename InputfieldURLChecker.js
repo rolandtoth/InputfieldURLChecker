@@ -73,17 +73,21 @@ $(document).ready(function () {
 
             $(IUC.selector).each(function () {
 
-                var currInput = $(this);
+                var currInput = $(this),
+                    fieldList;
 
                 // continue if field is not among enabled fields
                 if (IUC.enabled_fields) {
-                    IUC.enabled_fields = IUC.enabled_fields.replace(' ', '');
-                    IUC.enabled_fields = '.Inputfield_' + IUC.enabled_fields.replace(',', ', .Inputfield_');
+                    fieldList = IUC.enabled_fields.replace(' ', '');
+                    fieldList = '#Inputfield_' + fieldList.replace(',', ', #Inputfield_');
 
-                    if (!$(parent).is(IUC.enabled_fields)) {
+                    if (!currInput.is(fieldList)) {
                         return true;
                     }
                 }
+
+                // add class to set padding only on enabled inputs
+                currInput.addClass('iuc-input');
 
                 // set link height
                 setTimeout(function () {

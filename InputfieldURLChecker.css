@@ -97,11 +97,11 @@ body.iuc-button-left .iuc-button {
     position: relative;
 }
 
-body.iuc-button-right .InputfieldURL input {
+body.iuc-button-right .InputfieldURL input.iuc-input {
     padding-right: 36px !important;
 }
 
-body.iuc-button-left .InputfieldURL input {
+body.iuc-button-left .InputfieldURL input.iuc-input {
     padding-left: 36px !important;
 }
 
