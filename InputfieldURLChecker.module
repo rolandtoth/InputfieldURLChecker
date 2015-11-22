@@ -2,7 +2,7 @@
 
 /**
  * InputfieldURLChecker module for ProcessWire
- * https://github.com/rolandtoth/InputfieldURLChecker
+ * https://goo.gl/F8CAK8
  */
 
 /**
@@ -14,7 +14,7 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         return array(
             'title' => 'InputfieldURLChecker',
             'author' => 'Roland Toth',
-            'version' => 105,
+            'version' => 110,
             'summary' => 'Admin helper for adding button or hotkey to FieldtypeURL to check link.',
             'href' => 'https://github.com/rolandtoth/InputfieldURLChecker',
             'icon' => 'arrow-right',
@@ -162,42 +162,74 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
 
     public function ready() {
 
-        if ($this->wire('page')->template->name != 'admin') {
-            return false;
-        }
+        if ($this->wire('page')->template->name != 'admin') return false;
 
         $editedPage = $this->wire('pages')->get($this->config->input->get->id);
 
         if (($editedPage instanceof NullPage)) {
-            $this->addHookBefore('Page::render', $this, 'addJsConfig');
+            $this->addHookBefore('Page::render', $this, 'addAssets');
         }
 
-        $this->addHookBefore('ProcessPageEdit::execute', $this, 'addJsConfig');
+        $this->addHookAfter('InputfieldURL::renderValue', $this, 'addEditLink');
+        $this->addHookAfter('InputfieldURL::render', $this, 'addEditLink');
+
+        $this->addHookBefore('ProcessPageEdit::execute', $this, 'addAssets');
 
         return false;
     }
 
 
-    public function addJsConfig(HookEvent $event) {
+    public function addEditLink(HookEvent $event) {
 
+        $inputfield = $event->object;
         $configData = $this->wire('modules')->getModuleConfigData($this);
+        $page = $this->pages->get($this->input->get->id);
+        $editLinkMarkup = '';
 
-        if (method_exists($event->object, 'getPage')) {
-            $template = $event->object->getPage()->template->name;
-        } else {
-            $template = $event->object->template->name;
+        if (!empty($configData['enabled_templates']) && !in_array($page->template->name, $configData['enabled_templates'])) {
+            return false;
         }
 
-        $this->config->js('IUC', array(
-                'mode' => isset($configData['mode']) ? $configData['mode'] : 'button',
-                'target' => isset($configData['target']) ? $configData['target'] : 'new-window',
-                'buttonPosition' => isset($configData['button_position']) ? $configData['button_position'] : 'button-left',
-                'forceHttp' => (bool)(isset($configData['force_http']) ? $configData['force_http'] : 1),
-                'enabled_fields' => isset($configData['enabled_fields']) ? implode(', ', $configData['enabled_fields']) : '',
-                'enabled_templates' => isset($configData['enabled_templates']) ? implode(', ', $configData['enabled_templates']) : '',
-                'template' => $template
-            )
-        );
+        if (!empty($configData['enabled_fields']) && !in_array($inputfield->name, $configData['enabled_fields'])) {
+            return false;
+        }
+
+
+        // process locked fields
+        if(in_array($inputfield->collapsed, array(7,8))) {
+            $target = isset($configData['target']) ? ' data-iuc-target="' . $configData['target'] . '"' : '';
+            $event->return = '<a href="' . $event->return . '" target="_blank" class="iuc iuc-locked-link"' . $target . '>' . $event->return . '</a>';
+            return false;
+        }
+
+
+        if (isset($configData['mode'])) {
+
+            $mode = implode(',', $configData['mode']);
+
+            if (array_intersect($configData['mode'], array('ctrl-shift-enter', 'ctrl-shift-click'))) {
+                $event->return = str_replace('>', ' data-iuc-mode="' . $mode . '">', $event->return);
+            }
+
+            if (in_array('button', $configData['mode'])) {
+                $buttonPosition = isset($configData['button_position']) ? $configData['button_position'] : '';
+                $editLinkMarkup = '<a class="iuc iuc-button ' . $buttonPosition . '" target="_blank"><i class="fa fa-arrow-right"></i></a>' . PHP_EOL;
+            }
+        }
+
+        if (isset($configData['target'])) {
+            $event->return = str_replace('>', ' data-iuc-target="' . $configData['target'] . '">', $event->return);
+        }
+
+        if (isset($configData['force_http']) && $configData['force_http'] == 1) {
+            $event->return = str_replace('>', ' data-iuc-force-http="1">', $event->return);
+        }
+
+        $event->return = $editLinkMarkup . $event->return;
+    }
+
+
+    public function addAssets(HookEvent $event) {
 
         $this->config->scripts->add($this->config->urls->siteModules . __CLASS__ . '/' . __CLASS__ . '.js?v=' . time());
         $this->config->styles->add($this->config->urls->siteModules . __CLASS__ . '/' . __CLASS__ . '.css?v=' . time());

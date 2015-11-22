@@ -1,6 +1,6 @@
 /**
  * InputfieldURLChecker module for ProcessWire
- * https://github.com/rolandtoth/InputfieldURLChecker
+ * https://goo.gl/F8CAK8
  */
 
 .iuc-button {
@@ -76,7 +76,7 @@
     background-image: none;
 }
 
-body.iuc-button-left .iuc-button {
+.iuc-button.button-left {
     right: auto;
     left: 16px;
 }
@@ -97,11 +97,11 @@ body.iuc-button-left .iuc-button {
     position: relative;
 }
 
-body.iuc-button-right .InputfieldURL input.iuc-input {
+.iuc-button.button-right + input {
     padding-right: 36px !important;
 }
 
-body.iuc-button-left .InputfieldURL input.iuc-input {
+.iuc-button.button-left + input {
     padding-left: 36px !important;
 }
 
