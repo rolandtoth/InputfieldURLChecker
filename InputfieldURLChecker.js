@@ -6,7 +6,6 @@
 $(document).ready(function () {
 
     var IUC = {
-        parent: '.InputfieldURL',
         selector: 'a.iuc',
         asmSelectPlaceholder: 'data-asm-placeholder',
         linkHiddenClass: 'iuc-hide',
@@ -36,7 +35,7 @@ $(document).ready(function () {
 
         $(IUC.selector).not('[' + IUC.dataLoaded + '="1"]').each(function () {
 
-            if($(this).hasClass(IUC.lockedClass)) {
+            if ($(this).hasClass(IUC.lockedClass)) {
                 addLockedFieldMode($(this));
             }
 
