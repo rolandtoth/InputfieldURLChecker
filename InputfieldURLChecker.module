@@ -163,8 +163,10 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
     public function ready() {
 
         if ($this->wire('page')->template->name != 'admin') return false;
+        $id = $this->sanitizer->int($this->config->input->get->id);
+        if(empty($id) || !is_numeric($id)) return false;
 
-        $editedPage = $this->wire('pages')->get($this->config->input->get->id);
+        $editedPage = $this->wire('pages')->get('id=' . $id);
 
         if (($editedPage instanceof NullPage)) {
             $this->addHookBefore('Page::render', $this, 'addAssets');
