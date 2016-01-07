@@ -1,5 +1,9 @@
 #Changelog
 
+### 1.1.2 (2016-01-06)
+
+- sanitize id (thanks to horst-n)
+
 ### 1.1.0 (2015-11-22)
 
 - module was rewritten to use InputfieldURL::render hook instead JavaScript
