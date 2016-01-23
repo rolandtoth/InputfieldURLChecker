@@ -14,7 +14,7 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         return array(
             'title' => 'InputfieldURLChecker',
             'author' => 'Roland Toth',
-            'version' => 112,
+            'version' => 113,
             'summary' => 'Admin helper for adding button or hotkey to FieldtypeURL to check link.',
             'href' => 'https://github.com/rolandtoth/InputfieldURLChecker',
             'icon' => 'arrow-right',
@@ -162,7 +162,10 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
 
     public function ready() {
 
+        if($this->wire('page')->process != 'ProcessPageEdit') return false;
+
         if ($this->wire('page')->template->name != 'admin') return false;
+
         $id = $this->sanitizer->int($this->config->input->get->id);
         if(empty($id) || !is_numeric($id)) return false;
 
