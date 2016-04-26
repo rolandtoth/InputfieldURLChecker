@@ -1,6 +1,10 @@
 #Changelog
 
 
+### 1.1.4 (2016-04-26)
+
+- allow module on Profile page
+
 ### 1.1.3 (2016-01-23)
 
 - restrict module to ProcessPageEdit (thanks to outflux3)
