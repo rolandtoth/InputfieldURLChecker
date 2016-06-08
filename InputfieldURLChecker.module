@@ -183,7 +183,7 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
             $editedPage = $this->wire('pages')->get('id=' . $id);
         }
 
-        if (($editedPage instanceof NullPage || $process == 'ProcessProfile')) {
+        if ((isset($editedPage) && ($editedPage instanceof NullPage || $process == 'ProcessProfile'))) {
             $this->addHookBefore('Page::render', $this, 'addAssets');
         }
 
