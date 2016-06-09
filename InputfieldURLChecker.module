@@ -14,7 +14,7 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         return array(
             'title'    => 'InputfieldURLChecker',
             'author'   => 'Roland Toth',
-            'version'  => 114,
+            'version'  => 115,
             'summary'  => 'Admin helper for adding button or hotkey to FieldtypeURL to check link.',
             'href'     => 'https://github.com/rolandtoth/InputfieldURLChecker',
             'icon'     => 'arrow-right',
@@ -23,13 +23,28 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         );
     }
 
+    /**
+     * Default configuration for module
+     *
+     */
+    static public function getDefaultData() {
+        return array(
+            'mode'              => array('button'),
+            'button_position'   => 'button-left',
+            'target'            => 'new-window',
+            'force_http'        => 1,
+            'enabled_templates' => array(),
+            'enabled_fields'    => array()
+        );
+    }
+
 
     public function getModuleConfigInputfields(array $data) {
 
-        $modules = $this->wire('modules');
+        $modules     = $this->wire('modules');
+        $defaultData = self::getDefaultData();
 
         $fields = new InputfieldWrapper();
-
 
         $fieldset              = new InputfieldFieldset();
         $fieldset->label       = __('Mode options', __FILE__);
@@ -39,11 +54,11 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         $field           = $modules->get('InputfieldCheckboxes');
         $field->name     = 'mode';
         $field->label    = __('Mode', __FILE__);
-        $field->required = true;
+//        $field->required = true;
         $field->addOption('button', __('Button', 'IUC'));
         $field->addOption('ctrl-shift-click', __('Ctrl + Shift + Click', 'IUC'));
         $field->addOption('ctrl-shift-enter', __('Ctrl + Shift + Enter', 'IUC'));
-        $field->value       = isset($data['mode']) ? $data['mode'] : 'button';
+        $field->value       = isset($data['mode']) ? $data['mode'] : $defaultData[ $field->name ];
         $field->columnWidth = 50;
         $fieldset->add($field);
 
@@ -53,8 +68,8 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         $field->label = __('Button position', __FILE__);
         $field->addOption('button-left', __('Left side of the field', 'IUC'));
         $field->addOption('button-right', __('Right side of the field', 'IUC'));
-        $field->value       = isset($data['button_position']) ? $data['button_position'] : 'button-left';
-        $field->required    = true;
+        $field->value       = isset($data['button_position']) ? $data['button_position'] : $defaultData[ $field->name ];
+//        $field->required    = true;
         $field->showIf      = 'mode=button';
         $field->requiredIf  = 'mode=button';
         $field->columnWidth = 50;
@@ -76,8 +91,8 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         $field->notes = __('Iframe mode fails if the target website does not allow iframe embed.', __FILE__);
         $field->addOption('new-window', __('new window or tab (default)', 'IUC'));
         $field->addOption('iframe', __('iframe', 'IUC'));
-        $field->value       = isset($data['target']) ? $data['target'] : 'new-window';
-        $field->required    = true;
+        $field->value       = isset($data['target']) ? $data['target'] : $defaultData[ $field->name ];
+//        $field->required    = true;
         $field->columnWidth = 100;
         $fieldset->add($field);
 
@@ -94,7 +109,7 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         $field->name        = 'force_http';
         $field->label       = __('Force HTTP prefix', __FILE__);
         $field->value       = (isset($data['force_http'])) ? $data['force_http'] : 1;
-        $field->checked     = ($field->value == 1) ? 'checked' : '';
+        $field->checked     = ($field->value == 1) ? 'checked' : $defaultData[ $field->name ];
         $field->columnWidth = 100;
         $fieldset->add($field);
 
@@ -118,7 +133,7 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
             $field->addOption($t->name, self::getFormattedOptionName($t));
         }
 
-        $field->value = isset($data['enabled_templates']) ? $data['enabled_templates'] : '';
+        $field->value = isset($data['enabled_templates']) ? $data['enabled_templates'] : $defaultData[ $field->name ];
         $fieldset->add($field);
 
 
@@ -140,7 +155,7 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
 
             $field->attr('data-asm-placeholder', __('Add fields...', __FILE__));
 
-            $field->value = isset($data['enabled_fields']) ? $data['enabled_fields'] : '';
+            $field->value = isset($data['enabled_fields']) ? $data['enabled_fields'] : $defaultData[ $field->name ];
 
         } else {
 
@@ -157,6 +172,11 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         $fields->add($fieldset);
 
         return $fields;
+    }
+
+    public function ___install() {
+        // apply default module settings on install
+        $this->wire('modules')->saveModuleConfigData($this, self::getDefaultData());
     }
 
 
