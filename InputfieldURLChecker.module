@@ -38,7 +38,6 @@ class InputfieldURLChecker extends WireData implements Module, ConfigurableModul
         );
     }
 
-
     public function getModuleConfigInputfields(array $data) {
 
         $modules     = $this->wire('modules');
